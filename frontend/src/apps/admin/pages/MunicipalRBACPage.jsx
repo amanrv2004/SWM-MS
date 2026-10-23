@@ -662,7 +662,7 @@ export default function MunicipalRBACPage({
                 <input
                   type="email"
                   required
-                  placeholder="e.g. ramesh@cleancty.gov or staff@trackmytrash.com"
+                  placeholder="e.g. ramesh@cleancty.gov or staff@swmms.gov.in"
                   value={regStaffForm.email}
                   onChange={(e) => setRegStaffForm({ ...regStaffForm, email: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs focus:bg-white focus:outline-blue-500 font-medium"

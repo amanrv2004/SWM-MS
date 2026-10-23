@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import io from 'socket.io-client';
+import { socket } from '../../services/socket';
 import ResidentLayout from './layout/ResidentLayout';
 import ResidentDashboardPage from './pages/ResidentDashboardPage';
 import ResidentTrackingPage from './pages/ResidentTrackingPage';
@@ -27,8 +27,6 @@ import {
   deleteComplaint,
   getAuthHeaders 
 } from './services/residentApi';
-
-const socket = io('http://localhost:5001', { autoConnect: true });
 
 // Haversine distance calculator in meters
 function calculateDistanceMeters(lat1, lon1, lat2, lon2) {
@@ -103,7 +101,7 @@ export default function ResidentApp() {
 
   // AI Chat Assistant State
   const [chatMessages, setChatMessages] = useState([
-    { sender: 'ai', text: 'Hello! I am TrackMyTrash AI Assistant. Ask me anything about waste segregation, recycling rules, or truck schedules!' }
+    { sender: 'ai', text: 'Hello! I am SWM&MS AI Assistant. Ask me anything about waste segregation, recycling rules, or truck schedules!' }
   ]);
   const [chatInput, setChatInput] = useState('');
   const [chatSending, setChatSending] = useState(false);
@@ -908,7 +906,7 @@ export default function ResidentApp() {
     setChatMessages([
       { 
         sender: 'ai', 
-        text: 'Hello! I am TrackMyTrash AI Assistant. Ask me anything about waste segregation, recycling rules, or truck schedules!',
+        text: 'Hello! I am SWM&MS AI Assistant. Ask me anything about waste segregation, recycling rules, or truck schedules!',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);

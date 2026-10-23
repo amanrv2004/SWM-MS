@@ -7,13 +7,13 @@ export const sendCredentialsNotification = async ({
   password,
   details = {}
 }) => {
-  const portalUrl = 'http://localhost:3000';
+  const portalUrl = process.env.CLIENT_URL || process.env.PORTAL_URL || 'http://localhost:3000';
   let roleName = 'Municipal Staff Employee';
   if (recipientType === 'resident') roleName = 'Resident Citizen';
   else if (recipientType === 'driver') roleName = 'Fleet Driver Operator';
   else if (recipientType === 'staff') roleName = details.roleName || 'Municipal Staff Employee';
 
-  const messageText = `Hello ${name}! Welcome to TrackMyTrash Municipal System.
+  const messageText = `Hello ${name}! Welcome to SWM&MS Municipal System.
 Your ${roleName} account has been registered by City Administration.
 Login ID: ${customId} / ${email}
 Password: ${password}
@@ -40,7 +40,7 @@ Please log in to start administrative and operational duties.`;
   }
 
   // Mailto link format
-  const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(`Your TrackMyTrash ${roleName} Credentials`)}&body=${encodeURIComponent(messageText)}`;
+  const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(`Your SWM&MS ${roleName} Credentials`)}&body=${encodeURIComponent(messageText)}`;
 
   return {
     success: true,

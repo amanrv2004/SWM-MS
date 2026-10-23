@@ -178,7 +178,7 @@ export default function DriverProfilePage({
               </span>
             </div>
             <p className="text-xs text-slate-500 flex items-center gap-1.5 font-medium">
-              <Mail className="w-3.5 h-3.5 text-slate-400" /> {driverInfo?.email || 'driver@trackmytrash.gov'}
+              <Mail className="w-3.5 h-3.5 text-slate-400" /> {driverInfo?.email || 'driver@swmms.gov'}
             </p>
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
@@ -487,7 +487,7 @@ export default function DriverProfilePage({
                   <h4 className="font-bold text-xs tracking-wider uppercase text-slate-300">
                     MUNICIPAL OPERATOR PASS
                   </h4>
-                  <span className="text-[10px] text-amber-400 font-semibold">TrackMyTrash Smart Fleet</span>
+                  <span className="text-[10px] text-amber-400 font-semibold">SWM&MS Smart Fleet</span>
                 </div>
               </div>
               <span className="font-mono text-xs font-extrabold text-amber-400 bg-amber-950/80 px-2.5 py-0.5 rounded border border-amber-700/60">

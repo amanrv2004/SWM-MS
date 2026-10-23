@@ -48,7 +48,7 @@ export default function PaymentReceiptModal({
         <div className="flex items-center justify-between print:hidden">
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <Building2 className="w-4 h-4 text-emerald-600" />
-            <span>TrackMyTrash Municipal Division • Treasury Receipt</span>
+            <span>SWM&MS Municipal Division • Treasury Receipt</span>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -77,13 +77,13 @@ export default function PaymentReceiptModal({
                   TMT
                 </div>
                 <div>
-                  <h2 className="text-base font-black text-[#0F172A] tracking-tight">TrackMyTrash Municipal HQ</h2>
+                  <h2 className="text-base font-black text-[#0F172A] tracking-tight">SWM&MS Municipal HQ</h2>
                   <p className="text-[10px] text-slate-400">Department of Sanitation & Waste Management Treasury</p>
                 </div>
               </div>
               <p className="text-xs text-slate-500 mt-2">
                 100 Civic Center Plaza, Municipal Zone 1<br />
-                treasury@trackmytrash.gov • 1800-11-2026 (Toll Free)
+                treasury@swmms.gov • 1800-11-2026 (Toll Free)
               </p>
             </div>
 

@@ -84,7 +84,7 @@ export default function AdminProfilePage({
   }, [adminUser, isEditing]);
 
   const customId = adminUser?.customId || 'ADM-001';
-  const email = adminUser?.email || 'admin@trackmytrash.gov.in';
+  const email = adminUser?.email || 'admin@swmms.gov.in';
   const roleDisplay = (adminUser?.role || 'admin').toUpperCase();
 
   const handleSave = async (e) => {

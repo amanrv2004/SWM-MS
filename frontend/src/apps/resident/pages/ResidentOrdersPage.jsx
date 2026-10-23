@@ -26,10 +26,8 @@ import {
   Sparkles,
   ArrowRight
 } from 'lucide-react';
-import io from 'socket.io-client';
+import { socket } from '../../../services/socket';
 import { soundManager } from '../../../utils/audioAlerts';
-
-const socket = io('http://localhost:5001', { autoConnect: true });
 
 export default function ResidentOrdersPage({ 
   activeSubTab = 'orders', 

@@ -137,7 +137,7 @@ export default function ResidentProfilePage({
               </span>
             </div>
             <p className="text-xs text-slate-500 flex items-center gap-1.5 font-medium">
-              <Mail className="w-3.5 h-3.5 text-slate-400" /> {resident?.email || 'resident@trackmytrash.gov'}
+              <Mail className="w-3.5 h-3.5 text-slate-400" /> {resident?.email || 'resident@swmms.gov'}
             </p>
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
@@ -398,7 +398,7 @@ export default function ResidentProfilePage({
                   <h4 className="font-bold text-xs tracking-wider uppercase text-slate-300">
                     MUNICIPAL SANITATION CARD
                   </h4>
-                  <span className="text-[10px] text-emerald-400 font-semibold">TrackMyTrash Smart City</span>
+                  <span className="text-[10px] text-emerald-400 font-semibold">SWM&MS Smart City</span>
                 </div>
               </div>
               <span className="font-mono text-xs font-extrabold text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded border border-emerald-700/60">

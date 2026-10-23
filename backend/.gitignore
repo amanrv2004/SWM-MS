@@ -27,3 +27,5 @@ pids
 *.pid
 *.seed
 *.pid.lock
+src/scripts/
+scripts/

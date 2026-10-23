@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import io from 'socket.io-client';
+import { socket } from '../../services/socket';
 import DriverLayout from './layout/DriverLayout';
 import DriverDashboardPage from './pages/DriverDashboardPage';
 import DriverRoadsidePickupsPage from './pages/DriverRoadsidePickupsPage';
@@ -11,8 +11,6 @@ import DriverOrdersPage from './pages/DriverOrdersPage';
 import DriverProfilePage from './pages/DriverProfilePage';
 import RecordWeightModal from './components/RecordWeightModal';
 import { soundManager } from '../../utils/audioAlerts';
-
-const socket = io('http://localhost:5001', { autoConnect: true });
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('tmt_driver_token') || localStorage.getItem('tmt_token');

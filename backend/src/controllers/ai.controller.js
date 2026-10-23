@@ -2,15 +2,15 @@ import { Complaint } from '../models/Complaint.js';
 import { EmergencyRequest } from '../models/EmergencyRequest.js';
 import { AuditLog } from '../models/AuditLog.js';
 
-const SYSTEM_PROMPT = `You are "TrackMyTrash AI Assistant", an expert, friendly municipal sanitation and waste management AI chatbot for the TrackMyTrash (TMT) smart city platform.
+const SYSTEM_PROMPT = `You are "SWM&MS AI Assistant", an expert, friendly municipal sanitation and waste management AI chatbot for the SWM&MS smart city platform.
 
 Your primary responsibilities and domain expertise:
 1. Waste Segregation & Classification:
    - Green Bin (Wet/Biodegradable): Kitchen food scraps, raw/cooked leftovers, vegetable/fruit peels, tea bags, garden leaves, eggshells. NEVER put plastic or foil in green bins!
    - Blue Bin (Dry/Recyclable): Clean plastics, PET bottles, cardboard cartons, rinsed milk pouches, aluminum foil, glass bottles, metal tins, paper. Advise rinsing residue before disposal.
    - Red/Black Bin (Domestic Hazardous): Batteries, expired medicines, chemicals, paints, pesticides, syringes, sanitary pads & diapers (wrapped securely in paper).
-   - Electronic Waste (E-Waste): Old phones, chargers, laptops, lithium-ion batteries, cables, PCBs. Advise using TrackMyTrash Emergency Pickup or municipal E-Waste kiosks.
-2. TrackMyTrash App Features & Help:
+   - Electronic Waste (E-Waste): Old phones, chargers, laptops, lithium-ion batteries, cables, PCBs. Advise using SWM&MS Emergency Pickup or municipal E-Waste kiosks.
+2. SWM&MS App Features & Help:
    - Live Fleet Radar: Track collection trucks with real-time GPS and doorstep arrival audio alert sirens.
    - Emergency Pickup (SOS): 24/7 on-demand pickup requests for bulky waste, event garbage, hazardous items, or overflow.
    - Complaint Center: File grievances for missed collections, roadside dumps, or driver issues. Real-time resolution tracking.
@@ -55,10 +55,10 @@ const getLocalAIReply = (message) => {
   }
 
   if (query.includes('hello') || query.includes('hi') || query.includes('hey') || query.includes('namaste')) {
-    return `👋 **Namaste & Welcome to TrackMyTrash AI Assistant!**\n\nI am your 24/7 municipal sanitation and recycling guide. How can I assist you today?\n\n- Ask about **Wet vs Dry waste segregation**\n- Check **Daily truck arrival schedules**\n- Learn how to **Earn & redeem Garbage Points**\n- Inquire about **E-waste disposal or Home Composting**`;
+    return `👋 **Namaste & Welcome to SWM&MS AI Assistant!**\n\nI am your 24/7 municipal sanitation and recycling guide. How can I assist you today?\n\n- Ask about **Wet vs Dry waste segregation**\n- Check **Daily truck arrival schedules**\n- Learn how to **Earn & redeem Garbage Points**\n- Inquire about **E-waste disposal or Home Composting**`;
   }
 
-  return `🤖 **TrackMyTrash Municipal AI Guide:**\n\nI can assist you with:\n1. ♻️ **Garbage Segregation Rules:** Green (Wet), Blue (Dry), and Red (Hazardous)\n2. 🚚 **Truck Schedules & Live GPS Radar:** Doorstep collection timings and tracking\n3. 🪙 **Eco-Points & Bill Discounts:** How to earn points and redeem municipal rewards\n4. ⚡ **E-Waste & Bulky Item Pickup:** Proper disposal of batteries and electronics\n5. 📢 **Grievance Resolution:** Filing complaints for missed pickups or street dumps\n\nWhat would you like to know more about?`;
+  return `🤖 **SWM&MS Municipal AI Guide:**\n\nI can assist you with:\n1. ♻️ **Garbage Segregation Rules:** Green (Wet), Blue (Dry), and Red (Hazardous)\n2. 🚚 **Truck Schedules & Live GPS Radar:** Doorstep collection timings and tracking\n3. 🪙 **Eco-Points & Bill Discounts:** How to earn points and redeem municipal rewards\n4. ⚡ **E-Waste & Bulky Item Pickup:** Proper disposal of batteries and electronics\n5. 📢 **Grievance Resolution:** Filing complaints for missed pickups or street dumps\n\nWhat would you like to know more about?`;
 };
 
 // Google Gemini API integration
@@ -504,7 +504,7 @@ Return a strict JSON object with these exact keys:
         volumeEstimate: Number(calcTotalKg) > 20 ? 'Heavy Overflow Dump (~2.5 m³)' : 'Moderate Pile (~1.2 m³)',
         severityLevel: calcHazard,
         hazardRisk: calcHazard === 'Critical' ? 'Biohazard & Traffic Obstruction Risk' : 'Sanitation Odor & Public Health Risk',
-        aiSummary: `AI Multi-Angle Analysis from ${rawImagesList.length} verified photos: Identified ${calcTypes}. Total estimated quantity: ~${calcTotalKg} kg. Priority Level: ${calcHazard}. Verified by TrackMyTrash Municipal Vision Engine.`,
+        aiSummary: `AI Multi-Angle Analysis from ${rawImagesList.length} verified photos: Identified ${calcTypes}. Total estimated quantity: ~${calcTotalKg} kg. Priority Level: ${calcHazard}. Verified by SWM&MS Municipal Vision Engine.`,
         model: 'tmt-municipal-engine'
       };
     }

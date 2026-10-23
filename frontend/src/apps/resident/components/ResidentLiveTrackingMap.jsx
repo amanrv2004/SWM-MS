@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { Truck, Home, Navigation, Gauge, Clock, ExternalLink, RefreshCw, Radio, Crosshair } from 'lucide-react';
+import { Truck, Home, Navigation, Gauge, Clock, ExternalLink, RefreshCw, Radio, Crosshair, ChevronUp, ChevronDown } from 'lucide-react';
 import { 
   createVehicleIcon, 
   createResidentIcon, 
@@ -95,6 +95,12 @@ export default function ResidentLiveTrackingMap({
 }) {
   const [triggerFitCount, setTriggerFitCount] = useState(0);
   const [panTarget, setPanTarget] = useState(null);
+  const [isHudMinimized, setIsHudMinimized] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 640 && !isOnDuty;
+    }
+    return false;
+  });
 
   // When driver is on duty, track live location. When off duty, do not use driver location for the map!
   const dLat = Number(driverLocation?.lat !== undefined ? driverLocation.lat : driverLocation?.location?.lat);
@@ -190,7 +196,7 @@ export default function ResidentLiveTrackingMap({
   };
 
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950" style={{ height }}>
+    <div className="relative w-full min-h-[380px] rounded-3xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950" style={{ height }}>
       {/* Interactive Leaflet Map with OpenStreetMap tiles */}
       <MapContainer
         center={initialCenter}
@@ -281,104 +287,167 @@ export default function ResidentLiveTrackingMap({
       </MapContainer>
 
       {/* Floating Top Telemetry & ETA HUD */}
-      <div className="absolute top-4 left-4 z-10 bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-700/80 max-w-sm space-y-2.5 shadow-2xl text-white pointer-events-auto">
-        <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          <span className={`flex items-center gap-1.5 ${isOnDuty ? 'text-emerald-400' : 'text-amber-400'}`}>
-            <span className={`w-2.5 h-2.5 rounded-full ${isOnDuty ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`}></span>
-            {isOnDuty ? 'LIVE FLEET STREAM' : 'DRIVER OFF DUTY • TELEMETRY PAUSED'}
-          </span>
-          <span className="font-mono text-emerald-300 bg-emerald-950/70 px-2 py-0.5 rounded border border-emerald-800/60 text-[10px]">
-            {isOnDuty 
-              ? `${vehicleCoords[0].toFixed(4)}°, ${vehicleCoords[1].toFixed(4)}°` 
-              : (residentCoords ? `${residentCoords[0].toFixed(4)}°, ${residentCoords[1].toFixed(4)}°` : 'Standby')}
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <h4 className="font-extrabold text-sm text-white flex items-center gap-2">
-              {isOnDuty ? (
-                <>
-                  <Truck className="w-4 h-4 text-[#00B074]" />
-                  <span>{vehicleName}</span>
-                </>
-              ) : (
-                <>
-                  <Home className="w-4 h-4 text-indigo-400" />
-                  <span>{residentName || 'Household Property'}</span>
-                </>
-              )}
-            </h4>
-            <span className="text-[11px] text-slate-300">
-              {isOnDuty 
-                ? `${driverName} • ${activeSector}` 
-                : `${residentAddress || activeSector} • (Driver Offline)`}
-            </span>
-          </div>
-
-          {/* Live ETA / Duty Pill */}
-          <div className={`border rounded-xl px-3 py-1.5 text-right shrink-0 ${
-            isOnDuty 
-              ? 'bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border-emerald-500/40' 
-              : 'bg-slate-800 border-slate-700'
-          }`}>
-            <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 block">
-              {isOnDuty ? 'EST. ARRIVAL' : 'DUTY STATUS'}
-            </span>
-            <div className={`text-base font-extrabold leading-tight ${isOnDuty ? 'text-emerald-300' : 'text-amber-400'}`}>
-              {isOnDuty ? `~${liveEta} min` : 'Off Duty'}
+      {isHudMinimized ? (
+        <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 right-2.5 sm:right-auto z-10 bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-slate-700/80 shadow-2xl text-white pointer-events-auto flex items-center justify-between gap-3 max-w-[calc(100%-1.25rem)] sm:max-w-sm">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${isOnDuty ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 text-xs font-bold truncate">
+                <Home className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <span className="truncate">{residentName || 'Household'}</span>
+              </div>
+              <p className="text-[10px] text-slate-400 truncate">
+                {isOnDuty ? `Driver: ${driverName} • ~${liveEta} min` : 'Driver Off Duty (Standby)'}
+              </p>
             </div>
           </div>
-        </div>
 
-        {/* Metrics Row: Distance & Speed */}
-        <div className="pt-2 border-t border-slate-800 grid grid-cols-2 gap-2 text-xs">
-          <div className="flex items-center gap-1.5 text-slate-300">
-            <Navigation className="w-3.5 h-3.5 text-emerald-400" />
-            <span>
-              Distance: <strong className="text-white">{isOnDuty ? (distanceKm ? `${distanceKm} km` : 'In Transit') : 'Driver Offline'}</strong>
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 text-slate-300">
-            <Gauge className="w-3.5 h-3.5 text-emerald-400" />
-            <span>
-              Speed: <strong className="text-white">{isOnDuty ? `${driverLocation?.speedKm || 22} km/h` : '0 km/h (Standby)'}</strong>
-            </span>
-          </div>
-        </div>
-
-        {/* Quick Map Controls */}
-        <div className="pt-2 border-t border-slate-800 flex items-center gap-2">
-          {residentCoords && (
+          <div className="flex items-center gap-1.5 shrink-0">
+            {residentCoords && (
+              <button
+                type="button"
+                onClick={handleRecenterHome}
+                className="bg-indigo-900/70 hover:bg-indigo-800 text-indigo-200 border border-indigo-700/60 rounded-lg px-2 py-1 text-[10px] font-bold transition flex items-center gap-1 cursor-pointer"
+                title="Focus Home"
+              >
+                <Home className="w-3 h-3" />
+                <span className="hidden xs:inline">Home</span>
+              </button>
+            )}
             <button
               type="button"
-              onClick={handleRecenterHome}
-              className="flex-1 bg-indigo-900/60 hover:bg-indigo-900 text-indigo-200 border border-indigo-700/60 rounded-lg px-2.5 py-1 text-[10px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
+              onClick={() => setIsHudMinimized(false)}
+              className="bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg px-2 py-1 text-[10px] font-bold border border-slate-700 transition flex items-center gap-1 cursor-pointer"
+              title="Show HUD Details"
             >
-              <Home className="w-3 h-3" /> Focus Home
+              <span>Details</span>
+              <ChevronDown className="w-3 h-3" />
             </button>
+          </div>
+        </div>
+      ) : (
+        <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 right-2.5 sm:right-auto z-10 bg-slate-900/90 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-slate-700/80 max-w-[calc(100%-1.25rem)] sm:max-w-sm space-y-2 sm:space-y-2.5 shadow-2xl text-white pointer-events-auto">
+          {/* Top Bar with Status and Minimize Button */}
+          <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <span className={`flex items-center gap-1.5 ${isOnDuty ? 'text-emerald-400' : 'text-amber-400'}`}>
+              <span className={`w-2.5 h-2.5 rounded-full ${isOnDuty ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`}></span>
+              <span className="truncate">{isOnDuty ? 'LIVE FLEET STREAM' : 'DRIVER OFF DUTY • TELEMETRY PAUSED'}</span>
+            </span>
+
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="font-mono text-emerald-300 bg-emerald-950/70 px-1.5 sm:px-2 py-0.5 rounded border border-emerald-800/60 text-[9px] sm:text-[10px]">
+                {isOnDuty 
+                  ? `${vehicleCoords[0].toFixed(4)}°, ${vehicleCoords[1].toFixed(4)}°` 
+                  : (residentCoords ? `${residentCoords[0].toFixed(4)}°, ${residentCoords[1].toFixed(4)}°` : 'Standby')}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsHudMinimized(true)}
+                className="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer"
+                title="Minimize card to view full map"
+                aria-label="Minimize HUD"
+              >
+                <ChevronUp className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <h4 className="font-extrabold text-xs sm:text-sm text-white flex items-center gap-1.5 truncate">
+                {isOnDuty ? (
+                  <>
+                    <Truck className="w-3.5 h-3.5 text-[#00B074] shrink-0" />
+                    <span className="truncate">{vehicleName}</span>
+                  </>
+                ) : (
+                  <>
+                    <Home className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                    <span className="truncate">{residentName || 'Household Property'}</span>
+                  </>
+                )}
+              </h4>
+              <span className="text-[10px] sm:text-[11px] text-slate-300 truncate block">
+                {isOnDuty 
+                  ? `${driverName} • ${activeSector}` 
+                  : `${residentAddress || activeSector} • (Driver Offline)`}
+              </span>
+            </div>
+
+            {/* Live ETA / Duty Pill */}
+            <div className={`border rounded-xl px-2.5 py-1 sm:px-3 sm:py-1.5 text-right shrink-0 ${
+              isOnDuty 
+                ? 'bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border-emerald-500/40' 
+                : 'bg-slate-800 border-slate-700'
+            }`}>
+              <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wider text-slate-400 block">
+                {isOnDuty ? 'EST. ARRIVAL' : 'DUTY STATUS'}
+              </span>
+              <div className={`text-xs sm:text-base font-extrabold leading-tight ${isOnDuty ? 'text-emerald-300' : 'text-amber-400'}`}>
+                {isOnDuty ? `~${liveEta} min` : 'Off Duty'}
+              </div>
+            </div>
+          </div>
+
+          {/* Metrics Row: Only display when driver is ON DUTY */}
+          {isOnDuty ? (
+            <div className="pt-2 border-t border-slate-800 grid grid-cols-2 gap-2 text-[11px] sm:text-xs">
+              <div className="flex items-center gap-1.5 text-slate-300">
+                <Navigation className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">
+                  Distance: <strong className="text-white">{distanceKm ? `${distanceKm} km` : 'In Transit'}</strong>
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 text-slate-300">
+                <Gauge className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">
+                  Speed: <strong className="text-white">{`${driverLocation?.speedKm || 22} km/h`}</strong>
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="pt-1.5 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
+              <span className="flex items-center gap-1">
+                <Home className="w-3 h-3 text-indigo-400" />
+                <span>Centered on household</span>
+              </span>
+              <span className="text-amber-400/90 font-medium">Standby Mode</span>
+            </div>
           )}
-          {isOnDuty && (
+
+          {/* Quick Map Controls */}
+          <div className="pt-2 border-t border-slate-800 flex items-center gap-2">
+            {residentCoords && (
+              <button
+                type="button"
+                onClick={handleRecenterHome}
+                className="flex-1 bg-indigo-900/60 hover:bg-indigo-900 text-indigo-200 border border-indigo-700/60 rounded-lg px-2.5 py-1 text-[10px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
+              >
+                <Home className="w-3 h-3" /> Focus Home
+              </button>
+            )}
+            {isOnDuty && (
+              <button
+                type="button"
+                onClick={handleRecenterTruck}
+                className="flex-1 bg-emerald-900/60 hover:bg-emerald-900 text-emerald-200 border border-emerald-700/60 rounded-lg px-2.5 py-1 text-[10px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
+              >
+                <Truck className="w-3 h-3" /> Focus Truck
+              </button>
+            )}
             <button
               type="button"
-              onClick={handleRecenterTruck}
-              className="flex-1 bg-emerald-900/60 hover:bg-emerald-900 text-emerald-200 border border-emerald-700/60 rounded-lg px-2.5 py-1 text-[10px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
+              onClick={handleFitAll}
+              className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-lg px-2.5 py-1 text-[10px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
             >
-              <Truck className="w-3 h-3" /> Focus Truck
+              <Crosshair className="w-3 h-3" /> Reset View
             </button>
-          )}
-          <button
-            type="button"
-            onClick={handleFitAll}
-            className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-lg px-2.5 py-1 text-[10px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
-          >
-            <Crosshair className="w-3 h-3" /> Reset View
-          </button>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Floating Bottom Legend Indicator */}
-      <div className="absolute bottom-4 left-4 z-10 bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-slate-700/80 shadow-xl flex items-center gap-3 text-xs font-bold text-white pointer-events-auto">
+      {/* Floating Bottom Legend Indicator (Hidden on mobile to keep map 100% visible) */}
+      <div className="hidden sm:flex absolute bottom-4 left-4 z-10 bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-slate-700/80 shadow-xl items-center gap-3 text-xs font-bold text-white pointer-events-auto">
         {isOnDuty ? (
           <>
             <div className="flex items-center gap-1.5">
@@ -399,20 +468,21 @@ export default function ResidentLiveTrackingMap({
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 border border-white"></span>
             <span>🏠 {residentName || 'Household'} (Pickup Location)</span>
-            <span className="text-slate-400 text-[11px] font-normal">• Driver currently off duty (location hidden)</span>
+            <span className="text-slate-400 text-[11px] font-normal">• Driver offline</span>
           </div>
         )}
       </div>
 
-      {/* Bottom Right Turn-by-Turn External Link */}
-      <div className="absolute bottom-4 right-4 z-10 pointer-events-auto">
+      {/* Bottom Right External Navigation Link (Compact on mobile) */}
+      <div className="absolute bottom-2.5 sm:bottom-4 right-2.5 sm:right-4 z-10 pointer-events-auto">
         <a
           href={navigationDirectionsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md hover:bg-slate-900 text-emerald-400 hover:text-emerald-300 px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700 shadow-xl transition"
+          className="inline-flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md hover:bg-slate-900 text-emerald-400 hover:text-emerald-300 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-bold border border-slate-700 shadow-xl transition"
         >
-          <span>{isOnDuty ? 'Turn-by-Turn Navigation' : 'Open Location in Maps'}</span>
+          <span className="hidden sm:inline">{isOnDuty ? 'Turn-by-Turn Navigation' : 'Open in Maps'}</span>
+          <span className="sm:hidden text-[10px]">Maps</span>
           <ExternalLink className="w-3 h-3" />
         </a>
       </div>

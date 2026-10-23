@@ -1,6 +1,6 @@
-# TrackMyTrash (TMT) - Backend API & Real-time Telemetry Service
+# SWM&MS - Backend API & Real-time Telemetry Service
 
-This is the official Node.js, Express, MongoDB, and Socket.io backend service for the TrackMyTrash (TMT) Smart Waste Management System.
+This is the official Node.js, Express, MongoDB, and Socket.io backend service for the SWM&MS (Solid Waste Management & Monitoring System).
 
 ---
 
@@ -51,7 +51,6 @@ backend/
 │   └── superadminRoutes.js  # Global HQ city onboarding, audit logs
 ├── .env                     # Environment variables configuration
 ├── package.json             # Dependencies and scripts
-├── seeder.js                # Database seeder script
 └── server.js                # Express & Socket.io server entry point
 ```
 

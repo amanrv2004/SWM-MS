@@ -171,7 +171,7 @@ export default function AdminLayout({
                 <Building2 className="w-5 h-5 text-emerald-400" />
               </div>
               <div className="min-w-0">
-                <h1 className="font-bold text-sm text-[#0F172A] leading-tight truncate">Track My Trash</h1>
+                <h1 className="font-bold text-sm text-[#0F172A] leading-tight truncate">SWM&MS</h1>
                 <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase block truncate">Greater Noida</span>
               </div>
             </div>

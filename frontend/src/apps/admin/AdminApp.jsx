@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import io from 'socket.io-client';
+import { socket } from '../../services/socket';
 import AdminLayout from './layout/AdminLayout';
 import AdminFleetMapPage from './pages/AdminFleetMapPage';
 import AdminKpiGrid from './components/AdminKpiGrid';
@@ -135,8 +135,6 @@ function RestrictedModuleView({ requiredPermission, onBackToOverview, roleName }
     </div>
   );
 }
-
-const socket = io('http://localhost:5001', { autoConnect: true });
 
 export default function AdminApp() {
   const { tab: pathTab } = useParams();

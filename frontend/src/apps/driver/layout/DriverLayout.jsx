@@ -93,7 +93,7 @@ export default function DriverLayout({
                 <Truck className="w-5 h-5" />
               </div>
               <div className="min-w-0">
-                <h1 className="font-bold text-sm text-[#0F172A] leading-tight truncate">Track My Trash</h1>
+                <h1 className="font-bold text-sm text-[#0F172A] leading-tight truncate">SWM&MS</h1>
                 <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase block truncate">DRIVER TERMINAL</span>
               </div>
             </div>
@@ -108,7 +108,7 @@ export default function DriverLayout({
             </div>
 
             {/* Duty Shift Toggle Button */}
-            <button 
+            {/* <button 
               type="button"
               onClick={handleToggleDuty}
               className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0 shadow-2xs ${
@@ -118,7 +118,7 @@ export default function DriverLayout({
               <span className={`w-2 h-2 rounded-full ${isOnDuty ? 'bg-white animate-pulse' : 'bg-slate-500'}`}></span>
               <span className="sm:hidden">{isOnDuty ? 'On Duty' : 'Off Duty'}</span>
               <span className="hidden sm:inline">{isOnDuty ? 'Broadcasting Shift GPS' : 'Shift Inactive (Off Duty)'}</span>
-            </button>
+            </button> */}
 
             {/* Notification Bell */}
             <DriverNotificationBell

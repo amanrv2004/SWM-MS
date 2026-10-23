@@ -30,7 +30,7 @@ export default function PortalHeader() {
       <div className="flex items-center gap-3">
         <NavLink to="/resident" className="flex items-center gap-2 hover:opacity-90">
           <Sparkles className="w-4 h-4 text-[#00B074]" />
-          <span className="font-extrabold tracking-wider text-slate-200 uppercase text-[11px]">Track My Trash System</span>
+          <span className="font-extrabold tracking-wider text-slate-200 uppercase text-[11px]">SWM&MS System</span>
         </NavLink>
       </div>
 

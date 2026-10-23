@@ -12,6 +12,7 @@ import { handleSocketEvents } from './src/sockets/socket.handler.js';
 import { errorHandler, notFound } from './src/middleware/error.middleware.js';
 
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -42,7 +43,7 @@ app.set('io', io);
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
-    message: 'TrackMyTrash (TMT) Production API & WebSocket Server Active',
+    message: 'SWM&MS Production API & WebSocket Server Active',
     timestamp: new Date().toISOString()
   });
 });
@@ -52,6 +53,16 @@ app.use('/api', apiRoutes);
 
 // Socket.io Handlers
 handleSocketEvents(io);
+
+// Serve Built Frontend Static Files in Production (if dist exists)
+const frontendDistPath = path.resolve(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/socket.io')) return next();
+    res.sendFile(path.resolve(frontendDistPath, 'index.html'));
+  });
+}
 
 // 404 & Global Error Handling Middlewares
 app.use(notFound);
@@ -63,7 +74,7 @@ const PORT = process.env.PORT || 5001;
 connectDB().then(async () => {
   await ensureSuperadminAccount();
   server.listen(PORT, () => {
-    console.log(`🚀 TrackMyTrash Production Server running on http://localhost:${PORT}`);
+    console.log(`🚀 SWM&MS Production Server running on http://localhost:${PORT}`);
   });
 });
 

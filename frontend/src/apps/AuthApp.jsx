@@ -118,7 +118,7 @@ export default function AuthApp({ initialMode = 'login' }) {
                 <Building2 className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-extrabold text-base leading-tight">Track My Trash</h2>
+                <h2 className="font-extrabold text-base leading-tight">SWM&MS</h2>
                 <span className="text-[10px] font-bold text-[#00B074] tracking-wider uppercase block">Smart Municipal System</span>
               </div>
             </div>

@@ -108,7 +108,7 @@ export default function ResidentLayout({
                 </svg>
               </div>
               <div className="min-w-0">
-                <h1 className="font-bold text-sm text-[#0F172A] leading-tight truncate">Track My Trash</h1>
+                <h1 className="font-bold text-sm text-[#0F172A] leading-tight truncate">SWM&MS</h1>
                 <span className="text-[9px] font-bold tracking-wider text-slate-400 uppercase block truncate">RESIDENT PORTAL</span>
               </div>
             </div>
@@ -176,7 +176,7 @@ export default function ResidentLayout({
                 </div>
                 <div>
                   <h3 className="font-bold text-xs text-[#0F172A]">Resident Menu</h3>
-                  <span className="text-[9px] font-bold text-slate-400 uppercase block">Track My Trash</span>
+                  <span className="text-[9px] font-bold text-slate-400 uppercase block">SWM&MS</span>
                 </div>
               </div>
               <button

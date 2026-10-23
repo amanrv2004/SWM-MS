@@ -275,7 +275,7 @@ export default function ResidentDashboardPage({ data, setActiveTab }) {
           activeSector={data?.assignedDriver?.route || data?.resident?.sector}
           isOnDuty={Boolean(data?.assignedDriver?.isOnDuty)}
           isEmergency={false}
-          height="360px"
+          height="400px"
         />
       </div>
     </div>
